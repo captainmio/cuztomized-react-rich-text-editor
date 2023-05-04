@@ -43,7 +43,7 @@ function App() {
       icon: <Icon icon={quoteRight} />,
       isSelected: false,
       optionType: "advance",
-      value: "CITE",
+      value: "BLOCKQUOTE",
     },
     {
       name: "createLink",
@@ -53,7 +53,9 @@ function App() {
     },
   ]);
 
+  const [convertHTMLToString, setConvertHTMLToString] = useState("");
   const toggableBtn = ["bold", "italic"];
+  const [activeOptions, setActiveOptions] = useState([]);
   const fontList = ["Arial", "Times New Roman", "Georgia", "Verdana"];
 
   useEffect(() => {
@@ -66,13 +68,34 @@ function App() {
   };
 
   const handleBasicOption = (name: string, id: number) => {
+    let updateStatus = false;
     if (toggableBtn.indexOf(name) !== -1) {
       const newState = [...selectedButtons];
-      newState[id].isSelected = !newState[id].isSelected;
+      updateStatus = !newState[id].isSelected;
+      newState[id].isSelected = updateStatus;
       setSelectedButtons(newState);
     }
 
-    modifyText(name, false, undefined);
+    if (updateStatus && !document.queryCommandState(name)) {
+      modifyText(name, false, undefined);
+    }
+  };
+
+  const identifyAdvanceOption = (value: string): void => {
+    let userValue;
+    switch (value) {
+      case "createLink":
+        userValue = prompt("Provide input valid URL");
+        if (userValue == null) {
+          identifyAdvanceOption(value);
+        } else {
+          handleAdvanceOption(value, userValue);
+        }
+        break;
+
+      default:
+        break;
+    }
   };
 
   const modifyText = (
@@ -88,7 +111,6 @@ function App() {
       <div className="container container-center bg-white p-5 rounded">
         <div className="row">
           <div className="col-lg-12">
-            <blockquote>Test</blockquote>
             <NavigationToolbar className="d-flex gap-2">
               <Select
                 className="form-select w-auto d-grid"
@@ -129,7 +151,13 @@ function App() {
                       if (button.optionType === "basic") {
                         handleBasicOption(name, id);
                       } else {
-                        button.value && handleAdvanceOption(name, button.value);
+                        if (button.value) {
+                          // meaning value is provided in the code base
+                          handleAdvanceOption(name, button.value);
+                        } else {
+                          // value will be ask to the user
+                          identifyAdvanceOption(name);
+                        }
                       }
                     }}
                     className={
@@ -141,10 +169,25 @@ function App() {
                 );
               })}
             </NavigationToolbar>
-            <pre
+            <label className="mt-4 mb-2">
+              <strong>Rich-text Editor here</strong>
+            </label>
+            <div
               className="form-control textarea-size"
               contentEditable="true"
-            ></pre>
+              onInput={() => {
+                const contenteditable =
+                  document.querySelector("[contenteditable]");
+
+                setConvertHTMLToString(contenteditable?.innerHTML as string);
+              }}
+            ></div>
+            <label className="mt-4 mb-2">
+              RTE above converted to HTML code
+            </label>
+            <pre id="convertedHtml" className="form-control textarea-size">
+              {convertHTMLToString}
+            </pre>
           </div>
         </div>
       </div>
