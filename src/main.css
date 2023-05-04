@@ -1,0 +1,25 @@
+body {
+  background-color: aquamarine;
+}
+
+.container-center {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+}
+
+
+.element-wrapper {
+  padding: 15px 0px 15px 15px;
+}
+
+.textarea-size {
+  height: 300px;
+}
+
+.navigation-toolbar {
+  border-bottom: solid 1.5px;
+  padding: 20px 0px 15px 0px;
+  margin: 0 0 10px 0;
+}
