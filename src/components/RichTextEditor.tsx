@@ -80,18 +80,6 @@ function RichTextEditor(props: RichTextEditorProps) {
       value: "true",
     },
     {
-      name: "undo",
-      icon: <Icon icon={rotateLeft} />,
-      isSelected: false,
-      optionType: "basic",
-    },
-    {
-      name: "redo",
-      icon: <Icon icon={rotateRight} />,
-      isSelected: false,
-      optionType: "basic",
-    },
-    {
       name: "insertOrderedList",
       icon: <Icon icon={listOl} />,
       isSelected: false,
@@ -225,7 +213,7 @@ function RichTextEditor(props: RichTextEditorProps) {
 
   return (
     <>
-      <NavigationToolbar className="d-flex gap-2">
+      <NavigationToolbar className="d-flex gap-2 flex-wrap">
         <Select
           className="form-select w-auto d-grid"
           items={fontList}
