@@ -8,7 +8,7 @@ interface ButtonProps {
 }
 
 function Button(props: ButtonProps) {
-  const { name, id, isActive, className, children, onClick } = props;
+  const { name, id, className, children, onClick } = props;
   return (
     <button
       className={"btn " + (className ? className : "btn-default")}

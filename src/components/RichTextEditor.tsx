@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "./Button";
 import Select from "./Select";
 import TextField from "./TextField";
@@ -33,6 +33,8 @@ interface buttonSelectedProp {
 
 function RichTextEditor(props: RichTextEditorProps) {
   const { onInput } = props;
+
+  // list of button that can be a basic option or advance option
   const [selectedButtons, setSelectedButtons] = useState<buttonSelectedProp[]>([
     {
       name: "bold",
@@ -116,7 +118,7 @@ function RichTextEditor(props: RichTextEditorProps) {
     },
   ]);
 
-  //
+  // list of alignment buttons
   const alignBtn = [
     "justifyRight",
     "justifyLeft",
@@ -124,22 +126,26 @@ function RichTextEditor(props: RichTextEditorProps) {
     "justifyFull",
   ];
 
+  // list of button that can be active
   const canBeActiveBtn = ["bold", "italic", ...alignBtn];
 
-  const fontList = ["Arial", "Times New Roman", "Georgia", "Verdana"];
-  const fontSizes = ["1", "2", "3", "4", "5", "6", "7"];
+  // font family lists
+  const [fontList] = useState([
+    "Arial",
+    "Times New Roman",
+    "Georgia",
+    "Verdana",
+  ]);
 
-  useEffect(() => {
-    // initiate fontFamily
-    handleAdvanceOption("fontName", fontList[2]);
-    handleAdvanceOption("fontSize", fontSizes[2]);
-  }, []);
+  // font size lists from 1 to 7
+  const [fontSizes] = useState(["1", "2", "3", "4", "5", "6", "7"]);
 
+  // method to handle advance option buttons
   const handleAdvanceOption = (name: string, value: string) => {
-    console.log(name);
     modifyText(name, false, value);
   };
 
+  // method to handle basic option buttons
   const handleBasicOption = (name: string, id: number) => {
     if (canBeActiveBtn.indexOf(name) !== -1) {
       const newState = [...selectedButtons];
@@ -150,6 +156,7 @@ function RichTextEditor(props: RichTextEditorProps) {
     modifyText(name, false, undefined);
   };
 
+  // method to to force all align button to reset active
   const resetAlignBtnSelectedButton = () => {
     alignBtn.map((alignment) => {
       // resetting align buttons to isSelected to false
@@ -160,6 +167,7 @@ function RichTextEditor(props: RichTextEditorProps) {
     });
   };
 
+  // method to identify what type of button was clicked. it will call the method depending on what type of button was clicked(basic or advance)
   const handleButton = (
     button: buttonSelectedProp,
     name: string,
@@ -189,6 +197,7 @@ function RichTextEditor(props: RichTextEditorProps) {
     }
   };
 
+  // just a method for advance method that requires input(value) from the user
   const identifyAdvanceOption = (value: string): void => {
     let userValue;
     switch (value) {
