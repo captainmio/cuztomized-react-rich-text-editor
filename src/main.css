@@ -16,10 +16,20 @@ body {
 
 .textarea-size {
   height: 300px;
+  word-wrap: break-word;
+  overflow-x: none;
 }
 
 .navigation-toolbar {
   border-bottom: solid 1.5px;
   padding: 20px 0px 15px 0px;
   margin: 0 0 10px 0;
+}
+
+#convertedHtml {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
